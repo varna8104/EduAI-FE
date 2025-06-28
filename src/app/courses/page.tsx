@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function CoursesPage() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function CoursesPage() {
           </div>
           <div className="flex flex-1 justify-end gap-8">
             <div className="flex items-center gap-9">
-              <a className="text-[#101518] text-sm font-medium leading-normal" href="/">Home</a>
+              <Link className="text-[#101518] text-sm font-medium leading-normal" href="/">Home</Link>
             </div>
           </div>
         </header>

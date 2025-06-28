@@ -1,16 +1,35 @@
 "use client";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 const YT_API_KEY = "AIzaSyCOM4hcoVvd4I5DVDY6JrOg6z5hWMh8QDc";
 const YT_QUERY = "history for kids";
 
+interface Message {
+  role: string;
+  content: string;
+  fileName?: string;
+  fileType?: string;
+}
+
+interface Video {
+  id: { videoId: string };
+  snippet: {
+    title: string;
+    channelTitle: string;
+    thumbnails: {
+      medium: { url: string };
+    };
+  };
+}
+
 export default function HistoryChatPage() {
   const params = useParams();
-  const [messages, setMessages] = useState<{role: string, content: string, fileName?: string, fileType?: string}[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [videos, setVideos] = useState<any[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
@@ -39,7 +58,7 @@ export default function HistoryChatPage() {
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() && !file) return;
-    let userMsg;
+    let userMsg: Message;
     if (file) {
       userMsg = { role: "user", content: input ? input : "[File uploaded]", fileName: file.name, fileType: file.type };
     } else {
@@ -69,9 +88,9 @@ export default function HistoryChatPage() {
         })
       });
       const data = await res.json();
-      const aiMsg = { role: "assistant", content: data.choices?.[0]?.message?.content || "Sorry, I couldn't help with that. Try rephrasing your question!" };
+      const aiMsg: Message = { role: "assistant", content: data.choices?.[0]?.message?.content || "Sorry, I couldn't help with that. Try rephrasing your question!" };
       setMessages(msgs => [...msgs, aiMsg]);
-    } catch (err) {
+    } catch {
       setMessages(msgs => [...msgs, { role: "assistant", content: "Sorry, there was a problem connecting to the history tutor. Please try again." }]);
     }
     setLoading(false);
@@ -105,8 +124,8 @@ export default function HistoryChatPage() {
             {messages.length === 0 && (
               <div className="text-gray-400 text-center">Ask me any history or social studies question!</div>
             )}
-            {messages.map((msg, i) => (
-              <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+            {messages.map((msg, index) => (
+              <div key={index} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 <div className={`rounded-xl px-4 py-2 mb-1 max-w-[80%] text-lg font-semibold ${msg.role === "user" ? "bg-blue-100 text-blue-900" : "bg-[#f0f6fc] text-[#0f151a]"}`}>
                   {msg.role === "user" ? <b>You:</b> : <b>Edu me AI:</b>} {msg.content}
                   {msg.fileName && (
@@ -153,16 +172,18 @@ export default function HistoryChatPage() {
             </div>
           )}
           {filePreview && (
-            <div className="mt-2"><img src={filePreview} alt="Preview" className="max-h-32 rounded" /></div>
+            <div className="mt-2">
+              <Image src={filePreview} alt="Preview" width={128} height={128} className="max-h-32 rounded object-contain" />
+            </div>
           )}
         </div>
         {/* YouTube Videos */}
         <div className="flex-1 flex flex-col p-6">
           <h3 className="text-xl font-bold mb-4 text-[#0f151a]">Explore History Videos</h3>
           <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-            {videos.map((vid, i) => (
+            {videos.map((vid) => (
               <a key={vid.id.videoId} href={`https://www.youtube.com/watch?v=${vid.id.videoId}`} target="_blank" rel="noopener noreferrer" className="block bg-white rounded-xl shadow border border-[#d2dce4] p-3 hover:shadow-md transition">
-                <img src={vid.snippet.thumbnails.medium.url} alt={vid.snippet.title} className="rounded mb-2 w-full" />
+                <Image src={vid.snippet.thumbnails.medium.url} alt={vid.snippet.title} width={320} height={180} className="rounded mb-2 w-full" />
                 <div className="font-semibold text-[#0f151a] mb-1">{vid.snippet.title}</div>
                 <div className="text-sm text-[#56748f]">{vid.snippet.channelTitle}</div>
               </a>
