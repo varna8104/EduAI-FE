@@ -1,6 +1,7 @@
 "use client";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 
 const hobbies = [
   { title: "Drawing", description: "Unleash your imagination with colors and sketches", icon: "🖍️" },
@@ -67,7 +68,7 @@ export default function HobbiesPage() {
           </div>
           <div className="flex flex-1 justify-end gap-8">
             <div className="flex items-center gap-9">
-              <a className="text-[#101518] text-sm font-medium leading-normal" href="/">Home</a>
+              <Link className="text-[#101518] text-sm font-medium leading-normal" href="/">Home</Link>
             </div>
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => setShowDropdown(!showDropdown)}>
               <img src={parentAvatar} alt="profile" className="w-10 h-10 rounded-full border-2 border-[#3d98f4]" />

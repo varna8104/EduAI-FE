@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Head from "next/head";
+import Link from "next/link";
 import apiUtils from "@/utils/api";
 
 export default function LoginPage() {
@@ -63,7 +64,7 @@ export default function LoginPage() {
           </div>
           <div className="flex flex-1 justify-end gap-8">
             <div className="flex items-center gap-9">
-              <a className="text-[#0c151d] text-sm font-medium leading-normal" href="/">Home</a>
+              <Link className="text-[#0c151d] text-sm font-medium leading-normal" href="/">Home</Link>
               <a className="text-[#0c151d] text-sm font-medium leading-normal" href="#about">About</a>
               <a className="text-[#0c151d] text-sm font-medium leading-normal" href="#courses">Courses</a>
               <a className="text-[#0c151d] text-sm font-medium leading-normal" href="#contact">Contact</a>
@@ -99,7 +100,7 @@ export default function LoginPage() {
                       {submitting ? "Logging in..." : "Log In"}
                     </button>
                   </div>
-                  <p className="text-[#4574a1] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">Don't have an account? <a href="/register" className="underline">Register</a></p>
+                  <p className="text-[#4574a1] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">Don&apos;t have an account? <Link href="/register" className="underline">Register</Link></p>
                 </form>
               </div>
             </main>

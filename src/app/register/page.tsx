@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Head from "next/head";
+import Link from "next/link";
 import apiUtils from "@/utils/api";
 
 export default function RegisterPage() {
@@ -129,7 +130,7 @@ export default function RegisterPage() {
             <span className="text-[#0c151d] text-lg font-bold leading-tight tracking-[-0.015em]">EduAI</span>
           </div>
           <div className="flex flex-1 justify-end gap-4">
-            <a className="text-[#0c151d] text-sm font-medium leading-normal" href="/">Home</a>
+            <Link className="text-[#0c151d] text-sm font-medium leading-normal" href="/">Home</Link>
             {isLoggedIn ? (
               <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push('/profiles')}>
                 <img src={profileAvatar} alt="profile" className="w-10 h-10 rounded-full border-2 border-[#3d98f4]" />
@@ -230,7 +231,7 @@ export default function RegisterPage() {
                       {submitting ? "Registering..." : "Register"}
           </button>
                   </div>
-                  <p className="text-[#4574a1] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">Already have an account? <a href="/login" className="underline">Log In</a></p>
+                  <p className="text-[#4574a1] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">Already have an account? <Link href="/login" className="underline">Log In</Link></p>
         </form>
               </div>
             </main>
